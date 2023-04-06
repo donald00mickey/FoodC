@@ -6,12 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".customer.CartActivity">
 
-    <TextView
+    <Button
         android:id="@+id/protocheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Proceed to checkout"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="69dp"
+        android:gravity="center"
+        android:text="Total Amount : 200/-"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/protocheck"
+        app:layout_constraintStart_toStartOf="@+id/protocheck"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView3" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

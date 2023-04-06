@@ -37,10 +37,5 @@ public class AllOrderActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new OrderAdapter(orderModelList));
-
-        order_detail = findViewById(R.id.order_detail);
-        order_detail.setOnClickListener(view -> {
-            startActivity(new Intent(this, OrderInformationActivity.class));
-        });
     }
 }
