@@ -22,7 +22,7 @@ import java.util.List;
 
 public class MenuQRActivity extends AppCompatActivity {
 
-    ImageView menu;
+    FloatingActionButton menu;
     FloatingActionButton qr;
     RecyclerView recyclerView;
     List<MenuItemModel> menuItemModels = new ArrayList<>();
@@ -56,6 +56,7 @@ public class MenuQRActivity extends AppCompatActivity {
         qr.setOnClickListener(view -> {
             IntentIntegrator intentIntegrator = new IntentIntegrator(this);
             intentIntegrator.setPrompt("Scan a barcode or QR Code");
+            intentIntegrator.setBarcodeImageEnabled(false);
             intentIntegrator.setOrientationLocked(true);
             intentIntegrator.initiateScan();
         });
