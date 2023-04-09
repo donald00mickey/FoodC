@@ -1,6 +1,6 @@
 package com.example.myapplicationfood.adapters;
 
-import android.util.Log;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +11,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplicationfood.R;
-import com.example.myapplicationfood.models.MenuItemModel;
+import com.example.myapplicationfood.RestaurantDishesDao;
+import com.example.myapplicationfood.models.RestaurantDishes;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class MenuItemListAdapter extends RecyclerView.Adapter<MenuItemListAdapter.ViewHolder> {
-    List<MenuItemModel> menuItemModels;
+    private Context context;
     int a = 0;
+    ArrayList<RestaurantDishes> list = new ArrayList<>();
 
-    public MenuItemListAdapter(List<MenuItemModel> menuItemModels) {
-        this.menuItemModels = menuItemModels;
+    public MenuItemListAdapter(Context ctx) {
+        this.context = ctx;
+    }
+
+    public void setItems(ArrayList<RestaurantDishes> emp) {
+        list.addAll(emp);
     }
 
     @NonNull
@@ -34,9 +41,10 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<MenuItemListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        MenuItemModel menuItemModel = menuItemModels.get(position);
-        holder.dish_tv.setText(menuItemModel.getName());
-        holder.price_tv.setText(menuItemModel.getPrice());
+        RestaurantDishes restaurantDishes = list.get(position);
+        holder.dish_tv.setText(restaurantDishes.getDish_name());
+        holder.price_tv.setText(restaurantDishes.getPrice());
+        Glide.with(holder.itemView.getContext()).load(restaurantDishes.getImage()).centerCrop().into(holder.dish_img);
         holder.plus.setOnClickListener(view -> {
             a = a + 1;
             holder.count.setText(String.valueOf(a));
@@ -54,13 +62,13 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<MenuItemListAdapte
 
     @Override
     public int getItemCount() {
-        return menuItemModels.size();
+        return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView dish_tv;
         TextView price_tv, count;
-        ImageView minus, plus;
+        ImageView minus, plus, dish_img;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +77,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<MenuItemListAdapte
             count = itemView.findViewById(R.id.count);
             minus = itemView.findViewById(R.id.minus);
             plus = itemView.findViewById(R.id.plus);
+            dish_img = itemView.findViewById(R.id.dish_img);
         }
     }
 }

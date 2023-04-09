@@ -1,5 +1,6 @@
 package com.example.myapplicationfood.customer;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,13 +8,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.myapplicationfood.RestaurantDishesDao;
 import com.example.myapplicationfood.R;
 import com.example.myapplicationfood.adapters.MenuItemListAdapter;
+import com.example.myapplicationfood.models.RestaurantDishes;
 import com.example.myapplicationfood.models.MenuItemModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -26,28 +31,23 @@ public class MenuQRActivity extends AppCompatActivity {
     FloatingActionButton qr;
     RecyclerView recyclerView;
     List<MenuItemModel> menuItemModels = new ArrayList<>();
+    RestaurantDishesDao daoEmployee;
+    MenuItemListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_qractivity);
 
+        qr = findViewById(R.id.qr);
         menu = findViewById(R.id.menu);
         recyclerView = findViewById(R.id.recyclerView);
 
-        menuItemModels.add(new MenuItemModel("Dosa", "200", ""));
-        menuItemModels.add(new MenuItemModel("Idli", "100", ""));
-        menuItemModels.add(new MenuItemModel("Uttapam", "100", ""));
-        menuItemModels.add(new MenuItemModel("Samosa", "30", ""));
-        menuItemModels.add(new MenuItemModel("Kachori", "40", ""));
-        menuItemModels.add(new MenuItemModel("Wada", "30", ""));
-        menuItemModels.add(new MenuItemModel("Bhajiya", "20", ""));
-        menuItemModels.add(new MenuItemModel("Sambhar wada", "40", ""));
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MenuItemListAdapter(menuItemModels));
-        qr = findViewById(R.id.qr);
+        adapter = new MenuItemListAdapter(this);
+        recyclerView.setAdapter(adapter);
+        setuprv();
 
         menu.setOnClickListener(view -> {
             startActivity(new Intent(this, CartActivity.class));
@@ -59,6 +59,27 @@ public class MenuQRActivity extends AppCompatActivity {
             intentIntegrator.setBarcodeImageEnabled(false);
             intentIntegrator.setOrientationLocked(true);
             intentIntegrator.initiateScan();
+        });
+    }
+
+    private void setuprv() {
+        daoEmployee = new RestaurantDishesDao();
+        daoEmployee.get().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<RestaurantDishes> employees = new ArrayList<>();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    RestaurantDishes employee = dataSnapshot.getValue(RestaurantDishes.class);
+                    employees.add(employee);
+                }
+                adapter.setItems(employees);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
     }
 

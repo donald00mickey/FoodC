@@ -37,10 +37,11 @@ public class CartActivity extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MenuItemListAdapter(menuItemModels));
+//        recyclerView.setAdapter(new MenuItemListAdapter(menuItemModels));
 
         protocheck.setOnClickListener(view -> {
             startActivity(new Intent(this, ProceedToCheckoutActivity.class));
         });
+
     }
 }

@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplicationfood.customer.MenuQRActivity;
+import com.example.myapplicationfood.models.UserDetails;
 import com.example.myapplicationfood.owner.AllOrderActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -25,18 +27,14 @@ public class LoginActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
+        UserDetailsDao daoEmployee = new UserDetailsDao();
+
         loginButton.setOnClickListener(view -> {
-            if (username.getText().toString().equals("mohnish")) {
+            if (username.getText().toString().equals("admin")){
                 startActivity(new Intent(this, AllOrderActivity.class));
             }else {
                 startActivity(new Intent(this, MenuQRActivity.class));
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
     }
 }
