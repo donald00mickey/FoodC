@@ -1,6 +1,5 @@
-package com.example.myapplicationfood;
+package com.example.myapplicationfood.dao;
 
-import com.example.myapplicationfood.models.UserDetails;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -8,16 +7,16 @@ import com.google.firebase.database.Query;
 
 import java.util.HashMap;
 
-public class UserDetailsDao {
+public class UserRegistrationDao {
     private DatabaseReference databaseReference;
 
-    public UserDetailsDao(){
+    public UserRegistrationDao(){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference(UserDetails.class.getSimpleName());
+        databaseReference = firebaseDatabase.getReference(UserRegistrationDao.class.getSimpleName());
     }
 
-    public Task<Void> add(UserDetails employee){
-        return databaseReference.push().setValue(employee);
+    public Task<Void> add(UserRegistrationDao userRegistrationDao){
+        return databaseReference.push().setValue(userRegistrationDao);
     }
 
     public Task<Void> update(String key, HashMap<String ,Object> hashMap)

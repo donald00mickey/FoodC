@@ -1,4 +1,4 @@
-package com.example.myapplicationfood;
+package com.example.myapplicationfood.owner;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplicationfood.R;
+import com.example.myapplicationfood.dao.RestaurantDishesDao;
 import com.example.myapplicationfood.models.RestaurantDishes;
 
 public class AddMenuActivity extends AppCompatActivity {

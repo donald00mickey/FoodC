@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.example.myapplicationfood.customer.MenuQRActivity;
+import com.example.myapplicationfood.dao.UserDetailsDao;
 import com.example.myapplicationfood.models.UserDetails;
 
 public class RegisterationActivity extends AppCompatActivity {
@@ -34,6 +35,14 @@ public class RegisterationActivity extends AppCompatActivity {
         } else {
             designation = "customer";
         }
+
+        radioButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (radioButton.isChecked()) {
+                designation = "owner";
+            } else {
+                designation = "customer";
+            }
+        });
 
         registrationButton.setOnClickListener(view -> {
             UserDetailsDao daoEmployee = new UserDetailsDao();

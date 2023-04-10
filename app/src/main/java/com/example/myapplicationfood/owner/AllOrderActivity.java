@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.myapplicationfood.AddMenuActivity;
 import com.example.myapplicationfood.R;
 import com.example.myapplicationfood.adapters.OrderAdapter;
 import com.example.myapplicationfood.models.OrderModel;

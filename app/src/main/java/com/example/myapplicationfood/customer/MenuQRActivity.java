@@ -1,20 +1,23 @@
 package com.example.myapplicationfood.customer;
 
+import static android.view.View.INVISIBLE;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
-
-import com.example.myapplicationfood.RestaurantDishesDao;
 import com.example.myapplicationfood.R;
 import com.example.myapplicationfood.adapters.MenuItemListAdapter;
-import com.example.myapplicationfood.models.RestaurantDishes;
+import com.example.myapplicationfood.dao.RestaurantDishesDao;
+import com.example.myapplicationfood.models.CartModel;
 import com.example.myapplicationfood.models.MenuItemModel;
+import com.example.myapplicationfood.models.RestaurantDishes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,11 +31,13 @@ import java.util.List;
 public class MenuQRActivity extends AppCompatActivity {
 
     FloatingActionButton menu;
+    ArrayList<CartModel> cartModels = new ArrayList<>();
     FloatingActionButton qr;
     RecyclerView recyclerView;
     List<MenuItemModel> menuItemModels = new ArrayList<>();
     RestaurantDishesDao daoEmployee;
     MenuItemListAdapter adapter;
+    ArrayList<RestaurantDishes> employees = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +54,6 @@ public class MenuQRActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         setuprv();
 
-        menu.setOnClickListener(view -> {
-            startActivity(new Intent(this, CartActivity.class));
-        });
-
         qr.setOnClickListener(view -> {
             IntentIntegrator intentIntegrator = new IntentIntegrator(this);
             intentIntegrator.setPrompt("Scan a barcode or QR Code");
@@ -67,7 +68,6 @@ public class MenuQRActivity extends AppCompatActivity {
         daoEmployee.get().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<RestaurantDishes> employees = new ArrayList<>();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     RestaurantDishes employee = dataSnapshot.getValue(RestaurantDishes.class);
                     employees.add(employee);
@@ -91,6 +91,7 @@ public class MenuQRActivity extends AppCompatActivity {
             if (intentResult.getContents() == null) {
                 Toast.makeText(getBaseContext(), "Cancelled", Toast.LENGTH_SHORT).show();
             } else {
+                recyclerView.setVisibility(INVISIBLE);
                 Toast.makeText(this, intentResult.getContents(), Toast.LENGTH_LONG).show();
                 startActivity(new Intent(this, MenuQRActivity.class));
             }

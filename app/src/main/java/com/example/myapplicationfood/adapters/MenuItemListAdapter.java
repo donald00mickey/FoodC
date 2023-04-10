@@ -1,9 +1,13 @@
 package com.example.myapplicationfood.adapters;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,18 +17,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplicationfood.R;
-import com.example.myapplicationfood.RestaurantDishesDao;
+import com.example.myapplicationfood.models.CartModel;
 import com.example.myapplicationfood.models.RestaurantDishes;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MenuItemListAdapter extends RecyclerView.Adapter<MenuItemListAdapter.ViewHolder> {
     private Context context;
-    int a = 0;
     ArrayList<RestaurantDishes> list = new ArrayList<>();
 
-    public MenuItemListAdapter(Context ctx) {
-        this.context = ctx;
+
+    public MenuItemListAdapter(Context context) {
+        this.context = context;
     }
 
     public void setItems(ArrayList<RestaurantDishes> emp) {
@@ -45,18 +50,35 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<MenuItemListAdapte
         holder.dish_tv.setText(restaurantDishes.getDish_name());
         holder.price_tv.setText(restaurantDishes.getPrice());
         Glide.with(holder.itemView.getContext()).load(restaurantDishes.getImage()).centerCrop().into(holder.dish_img);
+        AtomicInteger a = new AtomicInteger();
         holder.plus.setOnClickListener(view -> {
-            a = a + 1;
-            holder.count.setText(String.valueOf(a));
+            a.set(a.get() + 1);
+            holder.count.setText(String.valueOf(a.get()));
         });
         holder.minus.setOnClickListener(view -> {
-            if (a <= 0) {
-                a = 0;
+            if (a.get() <= 0) {
+                a.set(0);
                 Toast.makeText(view.getContext(), "Items cannot be less than ZERO", Toast.LENGTH_SHORT).show();
             } else {
-                a = a - 1;
+                a.set(a.get() - 1);
             }
-            holder.count.setText(String.valueOf(a));
+            holder.count.setText(String.valueOf(a.get()));
+        });
+        holder.count.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
         });
     }
 
@@ -67,7 +89,8 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<MenuItemListAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView dish_tv;
-        TextView price_tv, count;
+        TextView price_tv;
+        EditText count;
         ImageView minus, plus, dish_img;
 
         public ViewHolder(@NonNull View itemView) {
