@@ -1,9 +1,12 @@
 package com.example.myapplicationfood.models;
 
-public class RestaurantDishes {
+import java.io.Serializable;
+
+public class RestaurantDishes implements Serializable {
    String dish_name;
    String price;
    String image;
+   String count;
 
     public RestaurantDishes() {
     }
@@ -12,6 +15,13 @@ public class RestaurantDishes {
         this.dish_name = dish_name;
         this.price = price;
         this.image = image;
+    }
+
+    public RestaurantDishes(String dish_name, String price, String image, String count) {
+        this.dish_name = dish_name;
+        this.price = price;
+        this.image = image;
+        this.count = count;
     }
 
     public String getDish_name() {
@@ -36,5 +46,13 @@ public class RestaurantDishes {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
     }
 }

@@ -16,7 +16,6 @@ import com.example.myapplicationfood.R;
 import com.example.myapplicationfood.adapters.MenuItemListAdapter;
 import com.example.myapplicationfood.dao.RestaurantDishesDao;
 import com.example.myapplicationfood.models.CartModel;
-import com.example.myapplicationfood.models.MenuItemModel;
 import com.example.myapplicationfood.models.RestaurantDishes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -26,18 +25,16 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MenuQRActivity extends AppCompatActivity {
-
     FloatingActionButton menu;
     ArrayList<CartModel> cartModels = new ArrayList<>();
     FloatingActionButton qr;
     RecyclerView recyclerView;
-    List<MenuItemModel> menuItemModels = new ArrayList<>();
     RestaurantDishesDao daoEmployee;
     MenuItemListAdapter adapter;
-    ArrayList<RestaurantDishes> employees = new ArrayList<>();
+    ArrayList<RestaurantDishes> restaurantDishesArrayList1 = new ArrayList<>();
+    ArrayList<RestaurantDishes> cartDishesArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +58,18 @@ public class MenuQRActivity extends AppCompatActivity {
             intentIntegrator.setOrientationLocked(true);
             intentIntegrator.initiateScan();
         });
+
+        menu.setOnClickListener(view -> {
+            for (RestaurantDishes restaurantDishes : restaurantDishesArrayList1){
+                if (!restaurantDishes.getCount().equals("0")){
+                    cartDishesArrayList.add(new RestaurantDishes(restaurantDishes.getDish_name(), restaurantDishes.getPrice(), restaurantDishes.getImage(), restaurantDishes.getCount()));
+                }
+            }
+            Intent intent = new Intent(this, CartActivity.class);
+            intent.putExtra("cart_list", cartDishesArrayList);
+            Toast.makeText(this, ""+cartDishesArrayList.size(), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(intent));
+        });
     }
 
     private void setuprv() {
@@ -69,10 +78,11 @@ public class MenuQRActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    RestaurantDishes employee = dataSnapshot.getValue(RestaurantDishes.class);
-                    employees.add(employee);
+                    RestaurantDishes restaurantDishes = dataSnapshot.getValue(RestaurantDishes.class);
+                    restaurantDishesArrayList1.add(new RestaurantDishes(restaurantDishes.getDish_name(),
+                            restaurantDishes.getPrice(), restaurantDishes.getImage(), "0"));
                 }
-                adapter.setItems(employees);
+                adapter.setItems(restaurantDishesArrayList1);
                 adapter.notifyDataSetChanged();
             }
 

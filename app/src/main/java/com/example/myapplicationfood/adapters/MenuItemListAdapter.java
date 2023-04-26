@@ -54,6 +54,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<MenuItemListAdapte
         holder.plus.setOnClickListener(view -> {
             a.set(a.get() + 1);
             holder.count.setText(String.valueOf(a.get()));
+            restaurantDishes.setCount(String.valueOf(a.get()));
         });
         holder.minus.setOnClickListener(view -> {
             if (a.get() <= 0) {
@@ -62,6 +63,8 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<MenuItemListAdapte
             } else {
                 a.set(a.get() - 1);
             }
+
+            restaurantDishes.setCount(String.valueOf(a.get()));
             holder.count.setText(String.valueOf(a.get()));
         });
         holder.count.addTextChangedListener(new TextWatcher() {
@@ -69,10 +72,9 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<MenuItemListAdapte
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                restaurantDishes.setCount(holder.count.getText().toString());
             }
 
             @Override

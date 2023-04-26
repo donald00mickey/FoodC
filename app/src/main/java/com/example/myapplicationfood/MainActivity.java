@@ -15,7 +15,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Handler handler = new Handler();
-        handler.postDelayed(() -> startActivity(new Intent(MainActivity.this, LoginActivity.class)), 3000);
+        Runnable runnable = () -> {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        };
+        handler.postDelayed(runnable, 3000);
 
     }
 }
